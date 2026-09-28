@@ -1,0 +1,14 @@
+Description
+This program represents a small social network graph using two common graph data structures: an Adjacency Matrix and an Adjacency List. The network contains six vertices, A, B, C, D, E, and F, with connections A–B, A–C, B–D, B–E, C–F, and E–F.
+
+The program performs Breadth First Search (BFS) and Depth First Search (DFS) starting from vertex A. It also performs a search operation to locate a specified vertex and compares the number of operations required using both graph representations.
+
+Finally, the program compares the two representations based on space requirements, traversal behaviour, edge checking, search operations, and time complexity. Since the given social network is sparse, the Adjacency List requires less storage and allows BFS and DFS to be performed in 
+O
+(
+V
++
+E
+)
+ time, making it more suitable than an Adjacency Matrix for this type of network.
+
