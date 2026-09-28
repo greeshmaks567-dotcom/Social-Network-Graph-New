@@ -1,0 +1,275 @@
+Given Graph
+Vertices: A, B, C, D, E, F
+
+Undirected edges:
+
+A–B
+
+A–C
+
+B–D
+
+B–E
+
+C–F
+
+E–F
+
+The graph has 6 vertices and 6 edges.
+
+a) Graph representations and traversals
+1. Adjacency Matrix
+Using the vertex order A, B, C, D, E, F:
+
+A	B	C	D	E	F
+A	0	1	1	0	0	0
+B	1	0	0	1	1	0
+C	1	0	0	0	0	1
+D	0	1	0	0	0	0
+E	0	1	0	0	0	1
+F	0	0	1	0	1	0
+
+Because the graph is undirected, the matrix is symmetric.
+
+BFS from A
+Assuming neighbours are examined in alphabetical order:
+
+Start at A
+
+Visit B and C
+
+From B, visit D and E
+
+From C, visit F
+
+D, E and F have no new vertices
+
+BFS order:
+
+A → B → C → D → E → F
+
+DFS from A
+Using alphabetical order for neighbour selection:
+
+A
+
+B
+
+D
+
+Backtrack to B
+
+E
+
+F
+
+C
+
+DFS order:
+
+A → B → D → E → F → C
+
+The exact DFS order can vary depending on the order in which neighbours are stored/examined. The above assumes alphabetical order.
+
+2. Adjacency List
+The same graph can be represented as:
+
+A → B → C
+B → A → D → E
+C → A → F
+D → B
+E → B → F
+F → C → E
+
+BFS
+Starting at A:
+
+Queue: [A]
+Visit A → add B, C
+Visit B → add D, E
+Visit C → add F
+Visit D
+Visit E
+Visit F
+
+BFS:
+
+A → B → C → D → E → F
+
+DFS
+A → B → D → E → F → C
+
+b) Search operation
+Suppose we want to locate vertex E, using the labels in the order:
+
+A, B, C, D, E, F
+
+Searching using an adjacency matrix
+If we simply search the vertex labels, we inspect the vertex-label array:
+
+A → B → C → D → E
+
+Therefore, E is found after 5 label comparisons.
+
+If the question instead means checking whether a particular edge exists, an adjacency matrix is particularly efficient. For example, to check whether B–E exists:
+
+matrix[B][E] = 1
+
+This takes one direct lookup: O(1).
+
+Searching using an adjacency list
+For a simple search through the vertex labels:
+
+A → B → C → D → E
+
+Again, 5 comparisons are required to locate E if the vertices are stored in this order.
+
+However, if searching for a vertex by traversing the graph from A, BFS/DFS can be used.
+
+For example, BFS searching for E:
+
+A → B → C → D → E
+
+E is encountered after visiting 5 vertices.
+
+DFS searching for E:
+
+A → B → D → E
+
+E is encountered after 4 vertices.
+
+Example operation record
+Operation	Adjacency Matrix	Adjacency List
+Find vertex E by sequential labels	5 comparisons	5 comparisons
+Check whether B–E exists	1 lookup	Search B's list; 3rd neighbour in this ordering
+BFS from A	A,B,C,D,E,F	A,B,C,D,E,F
+DFS from A	A,B,D,E,F,C	A,B,D,E,F,C
+
+c) Comparison
+Space requirements
+For V = 6 vertices and E = 6 edges:
+
+Adjacency matrix
+An adjacency matrix always requires:
+
+V
+2
+
+entries.
+
+Therefore:
+
+6
+2
+=
+36
+
+entries are required.
+
+For a general graph:
+
+O
+(
+V
+2
+)
+
+Adjacency list
+An adjacency list requires:
+
+6 entries for the vertices
+
+2 entries for every undirected edge
+
+Since there are 6 edges:
+
+2
+E
+=
+12
+
+edge references are stored.
+
+Thus, approximately:
+
+6
++
+12
+=
+18
+
+entries are needed, depending on the implementation.
+
+General space complexity:
+
+O
+(
+V
++
+E
+)
+
+For this graph, the adjacency list therefore the matrix, BFS/DFS must scan an entire row to determine which vertices are adjacent. uses considerably less storage than the 36-entry matrix.
+
+Traversal behaviour
+Feature	Adjacency Matrix	Adjacency List
+BFS	O(V²)	O(V + E)
+DFS	O(V²)	O(V + E)
+Find all neighbours of a vertex	O(V)	O(degree(v))
+Check whether an edge exists	O(1)	O(degree(v))
+Space	O(V²)	O(V + E)
+
+With the matrix, BFS/DFS must scan an entire row to determine which vertices are adjacent. Thus, even if a vertex has only two neighbours, up to V matrix entries may be examined.
+
+With the adjacency list, only the actual neighbours are examined for every possible pair of vertices.
+
+Overall analysis
+This social network is sparse because there are relatively few connections compared with the maximum possible number of connections.
+
+For an undirected graph with 6 vertices, the maximum number of edges is:
+
+V
+(
+V
+−
+1
+)
+2
+=
+6
+(
+5
+)
+2
+=
+15
+
+The graph has only 6 edges, compared with a maximum of 15.
+
+The execution results show:
+
+Both representations produce the same BFS order: A → B → C → D → E → F.
+
+Both produce the same DFS order under the chosen alphabetical neighbour ordering: A → B → D → E → F → C.
+
+Searching the vertex labels sequentially requires the same number of comparisons.
+
+However, edge checking is O(1) with a matrix, compared with O(degree(v)) using a list.
+
+The adjacency matrix uses 36 matrix cells, whereas the adjacency list needs only about 18 vertex/edge entries for this example.
+
+For larger sparse graphs, the difference becomes much more significant because the matrix grows as 
+V
+2
+, while the list grows as 
+V
++
+E
+.
+
+Conclusion
+For a sparse social network, the adjacency list is more suitable.
+
+Its main advantage is its O(V + E) space requirement and efficient BFS/DFS traversal of O(V + E). It stores only the connections that actually exist rather than allocating space for every possible pair of vertices.
+
+The adjacency matrix is preferable when very frequent edge-existence checks are required, because an edge can be checked in O(1) time. However, for the sparse network described here, the adjacency list provides better storage efficiency and traversal behaviour.
